@@ -1,0 +1,21 @@
+{
+  "name": "cryptostars",
+  "private": true,
+  "devDependencies": {
+    "@htmlacademy/editorconfig-cli": "^2.0.5",
+    "browser-sync": "^2.27.10",
+    "eslint": "^8.19.0",
+    "eslint-config-htmlacademy": "^6.0.0",
+    "pre-commit": "^1.2.2"
+  },
+  "scripts": {
+    "start": "browser-sync start --server public --no-ui --files \"js/**/*.js\"",
+    "lint": "editorconfig-cli && eslint ."
+  },
+  "editorconfig-cli": [
+    ".*",
+    "**/*.{js,json,md}",
+    "public/**/*.{html,css}"
+  ],
+  "pre-commit": "lint"
+}
