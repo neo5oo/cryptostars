@@ -184,14 +184,14 @@
         </div>
       </div>
 
-      <div class="container">
+      <div class="container users">
         <div class="users-nav">
           <div class="users-nav__tabs">
             <div class="tabs no-transition-global tabs--toggle-buy-sell" data-tabs="parent" data-delay="300">
               <div class="tabs__controls" data-tabs="controls">
                 <!-- При переключении с продавцов на покупателей и обратно нужно выделить активный пункт .is-active -->
-                <button class="tabs__control btn is-active" type="button" data-tabs="control">Купить</button>
-                <button class="tabs__control btn" type="button" data-tabs="control">Продать</button>
+                <button class="tabs__control btn is-active" type="button" data-tabs="control" data-open="buy">Купить</button>
+                <button class="tabs__control btn" type="button" data-tabs="control" data-open="sale">Продать</button>
               </div>
             </div>
           </div>
@@ -206,15 +206,15 @@
             <div class="tabs no-transition-global tabs--toggle-list-map" data-tabs="parent" data-delay="300">
               <!-- При переключении с карты на список и обратно нужно выделить активный пункт .is-active -->
               <div class="tabs__controls" data-tabs="controls">
-                <button class="tabs__control btn is-active" type="button" data-tabs="control">Cписок</button>
-                <button class="tabs__control btn" type="button" data-tabs="control">Карта</button>
+                <button class="tabs__control btn is-active" type="button" data-tabs="control" data-open="list">Cписок</button>
+                <button class="tabs__control btn" type="button" data-tabs="control" data-open="map">Карта</button>
               </div>
             </div>
           </div>
         </div>
 
         <!-- При переключении на карту блок .users-list нужно скрыть. Способ сокрытия подойдёт любой -->
-        <div class="users-list">
+        <div class="users-list" data-content="list">
           <table class="users-list__table tab-item active">
             <thead class="users-list__table-head">
               <tr class="users-list__table-row">
@@ -231,6 +231,7 @@
             </tbody>
           </table>
         </div>
+        <div data-content="map">Здесь будет карта</div>
       </div>
 
       <!--
