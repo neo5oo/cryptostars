@@ -9,7 +9,7 @@
     "pre-commit": "^1.2.2"
   },
   "scripts": {
-    "start": "browser-sync start --server public --no-ui --files \"js/**/*.js\"",
+    "start": "browser-sync start --server public --no-ui --files \"public/js/**/*.js\"",
     "lint": "editorconfig-cli && eslint ."
   },
   "editorconfig-cli": [

@@ -26,6 +26,7 @@ html {
 
 body {
   margin: 0;
+  overflow-y: scroll;
 }
 
 /**
@@ -381,7 +382,7 @@ template {
 */
 
 [hidden] {
-  display: none;
+  display: none !important;
 }
 
 @font-face {

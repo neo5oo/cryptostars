@@ -16,3 +16,10 @@ globals:
 
 extends:
   "htmlacademy/vanilla"
+
+rules:
+  no-console:
+    - error
+    -
+      allow:
+        - error
