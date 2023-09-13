@@ -231,7 +231,15 @@
             </tbody>
           </table>
         </div>
-        <div data-content="map">Здесь будет карта</div>
+        <div class="map" hidden data-content="map">
+          <!--
+            Карту нужно отрисовать в этот контейнер. Иконки для карты -
+            img/pin.svg и img/pin-verified.svg для обычных пользователей
+            и для верифицированных соответственно.
+
+            Контент для балуна вы найдёте в шаблоне #map-baloon__template
+          -->
+        </div>
       </div>
 
       <!--
@@ -248,19 +256,6 @@
             </svg>
           </span>
           <p class="message__paragraph">Нет подходящих объявлений</p>
-        </div>
-      </div>
-
-      <!-- При переключении на карту нужно отобразить данный контейнер -->
-      <div class="container" style="display: none">
-        <div class="map">
-          <!--
-            Карту нужно отрисовать в этот контейнер. Иконки для карты -
-            img/pin.svg и img/pin-verified.svg для обычных пользователей
-            и для верифицированных соответственно.
-
-            Контент для балуна вы найдёте в шаблоне #map-baloon__template
-          -->
         </div>
       </div>
     </main>

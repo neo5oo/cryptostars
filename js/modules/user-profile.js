@@ -1,4 +1,6 @@
-function initUserProfile({userName, cryptoBalance = 0, fiatBalance = 0}) {
+import {splitNumber} from '../utils/split-number.js';
+
+function initUserProfile({userName, balances: [fiatBalance, cryptoBalance]}) {
   const profileElement = document.querySelector('.user-profile');
   if (!profileElement) {
     return null;
@@ -8,10 +10,10 @@ function initUserProfile({userName, cryptoBalance = 0, fiatBalance = 0}) {
   userNameElement.textContent = userName;
 
   const cryptoBalanceElement = profileElement.querySelector('#user-crypto-balance');
-  cryptoBalanceElement.textContent = cryptoBalance;
+  cryptoBalanceElement.textContent = splitNumber(cryptoBalance.amount);
 
   const fiatBalanceElement = profileElement.querySelector('#user-fiat-balance');
-  fiatBalanceElement.textContent = fiatBalance;
+  fiatBalanceElement.textContent = splitNumber(fiatBalance.amount);
 }
 
 export {initUserProfile};
