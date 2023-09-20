@@ -1,5 +1,5 @@
 function initContractors() {
-  const contractorsElement = document.querySelector('.users');
+  const contractorsElement = document.querySelector('.contractors');
   if (!contractorsElement) {
     return null;
   }
