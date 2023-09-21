@@ -1,9 +1,12 @@
-function initContractors() {
+import {getContractorTemplate} from './get-contractor-template.js';
+
+function initContractors(contractors) {
   const contractorsElement = document.querySelector('.contractors');
   if (!contractorsElement) {
     return null;
   }
 
+  const tbodyElement = document.querySelector('.users-list__table-body');
   const listOpenerElement = contractorsElement.querySelector('[data-open="list"]');
   const mapOpenerElement = contractorsElement.querySelector('[data-open="map"]');
 
@@ -23,6 +26,8 @@ function initContractors() {
       event.currentTarget.classList.add('is-active');
     });
   });
+
+  tbodyElement.innerHTML = contractors.map(getContractorTemplate).join('');
 }
 
 export {initContractors};

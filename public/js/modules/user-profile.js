@@ -14,6 +14,8 @@ function initUserProfile({userName, balances: [fiatBalance, cryptoBalance]}) {
 
   const fiatBalanceElement = profileElement.querySelector('#user-fiat-balance');
   fiatBalanceElement.textContent = splitNumber(fiatBalance.amount);
+
+  profileElement.hidden = false;
 }
 
 export {initUserProfile};
