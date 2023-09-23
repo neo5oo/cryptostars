@@ -13,10 +13,6 @@ function initContractors(contractors) {
   const contentElements = contractorsElement.querySelectorAll('[data-content]');
   const openerElements = [listOpenerElement, mapOpenerElement];
 
-  // const buyButton = contractorsElement.querySelector('[data-open="buy"]');
-  // const saleButton = contractorsElement.querySelector('[data-open="sale"]');
-  // const sallers = contractors.filter(({status}) => status === 'seller');
-
   const checkbox = contractorsElement.querySelector('#checked-users');
   checkbox.addEventListener('change', showVerifiedContractors);
   const verifiedUsers = contractors.filter(({isVerified}) => isVerified);
@@ -44,6 +40,27 @@ function initContractors(contractors) {
     });
   });
 
+  function switchingBuySale() {
+    const buyButton = contractorsElement.querySelector('[data-open="buy"]');
+    const saleButton = contractorsElement.querySelector('[data-open="sale"]');
+    const sallers = contractors.filter(({status}) => status === 'seller');
+    const buyers = contractors.filter(({status}) => status === 'buyer');
+
+    const elements = [buyButton, saleButton];
+
+    elements.forEach((element) => {
+      element.addEventListener('click', (event) => {
+        elements.forEach((itemElement) => {
+          itemElement.classList.remove('is-active');
+        });
+        event.currentTarget.classList.add('is-active');
+        const result = event.currentTarget === saleButton ? buyers : sallers;
+        tbodyElement.innerHTML = result.map(getContractorTemplate).join('');
+      });
+    });
+  }
+
+  switchingBuySale();
   renderContractors();
 }
 
