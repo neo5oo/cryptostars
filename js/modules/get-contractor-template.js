@@ -1,4 +1,5 @@
 import {html} from '../utils/html.js';
+import {splitNumber} from '../utils/split-number.js';
 
 function getContractorTemplate(contractor) {
   function getMethodItemsTemplate() {
@@ -21,9 +22,9 @@ function getContractorTemplate(contractor) {
       <span>${contractor.userName}</span>
     </td>
     <td class="users-list__table-cell users-list__table-currency">${contractor.balance.currency}</td>
-    <td class="users-list__table-cell users-list__table-exchangerate">${contractor.exchangeRate} ₽</td>
+    <td class="users-list__table-cell users-list__table-exchangerate">${splitNumber(contractor.exchangeRate)} ₽</td>
     <td class="users-list__table-cell users-list__table-cashlimit">
-      9 999 999&nbsp;₽&nbsp;-&nbsp;9 999 999 000&nbsp;₽
+      ${splitNumber(contractor.minAmount)} ₽ - ${splitNumber(contractor.balance.amount)} ₽
     </td>
     <td class="users-list__table-cell users-list__table-payments">
       ${contractor.paymentMethods ? getMethodsTemplate() : ''}
