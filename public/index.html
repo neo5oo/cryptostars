@@ -11,6 +11,7 @@
   <link rel="preload" href="fonts/exo2-semibold.woff2" as="font" crossorigin="anonymous">
   <link rel="preload" href="fonts/exo2-bold.woff2" as="font" crossorigin="anonymous">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/leaflet.css">
 </head>
 
 <body>
@@ -231,7 +232,7 @@
             </tbody>
           </table>
         </div>
-        <div class="map" hidden data-content="map">
+        <div class="map" hidden data-content="map" id="map">
           <!--
             Карту нужно отрисовать в этот контейнер. Иконки для карты -
             img/pin.svg и img/pin-verified.svg для обычных пользователей
@@ -627,8 +628,8 @@
       <button class="btn btn--green user-card__change-btn" type="button">Обменять</button>
     </div>
   </template>
-
-  <script src="./js/main.js" type="module"></script>
+  <script src="js/leaflet.js"></script>
+  <script src="js/main.js" type="module"></script>
 </body>
 
 </html>
