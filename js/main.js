@@ -8,7 +8,7 @@ getData('contractors')
   .then(initContractors)
   .catch((err) => {
     if (isDev()) {
-      console.error(`Ошибка получения контрагентов:\n${err.message}`);
+      console.error(`Ошибка получения контрагентов:\n${err.stack}`);
     }
     showErrorMessage();
   });
@@ -19,6 +19,6 @@ getData('user')
   })
   .catch((err) => {
     if (isDev()) {
-      console.error(`Ошибка получения данных пользователя:\n${err.message}`);
+      console.error(`Ошибка получения данных пользователя:\n${err.stack}`);
     }
   });

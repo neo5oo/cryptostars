@@ -1,11 +1,12 @@
 import {getContractorTemplate} from './get-contractor-template.js';
+import {addMap} from './map.js';
 
 function initContractors(contractors) {
   const contractorsElement = document.querySelector('.contractors');
   if (!contractorsElement) {
     return null;
   }
-
+  let currentContractors = contractors;
   const tbodyElement = document.querySelector('.users-list__table-body');
   const listOpenerElement = contractorsElement.querySelector('[data-open="list"]');
   const mapOpenerElement = contractorsElement.querySelector('[data-open="map"]');
@@ -13,16 +14,15 @@ function initContractors(contractors) {
   const contentElements = contractorsElement.querySelectorAll('[data-content]');
   const openerElements = [listOpenerElement, mapOpenerElement];
 
-  const checkbox = contractorsElement.querySelector('#checked-users');
-  checkbox.addEventListener('change', showVerifiedContractors);
-  const verifiedUsers = contractors.filter(({isVerified}) => isVerified);
+  const checkboxElement = contractorsElement.querySelector('#checked-users');
 
-  function showVerifiedContractors() {
+  checkboxElement.addEventListener('change', () => {
     renderContractors();
-  }
+  });
 
   function renderContractors() {
-    const users = checkbox.checked ? verifiedUsers : contractors;
+    const verifiedUsers = currentContractors.filter(({isVerified}) => isVerified);
+    const users = checkboxElement.checked ? verifiedUsers : currentContractors;
     tbodyElement.innerHTML = users.map(getContractorTemplate).join('');
   }
 
@@ -40,7 +40,7 @@ function initContractors(contractors) {
     });
   });
 
-  function switchingBuySale() {
+  function switchBuySale() {
     const buyButton = contractorsElement.querySelector('[data-open="buy"]');
     const saleButton = contractorsElement.querySelector('[data-open="sale"]');
     const sallers = contractors.filter(({status}) => status === 'seller');
@@ -54,14 +54,20 @@ function initContractors(contractors) {
           itemElement.classList.remove('is-active');
         });
         event.currentTarget.classList.add('is-active');
-        const result = event.currentTarget === saleButton ? buyers : sallers;
-        tbodyElement.innerHTML = result.map(getContractorTemplate).join('');
+        currentContractors = event.currentTarget === saleButton ? buyers : sallers;
+        renderContractors();
       });
     });
   }
 
-  switchingBuySale();
+  switchBuySale();
   renderContractors();
+  addMap(
+    contractors.filter(({coords, paymentMethods, status}) => {
+      const hasRub = paymentMethods && paymentMethods.some(({currency}) => currency === 'RUB');
+      return status === 'seller' && coords && hasRub;
+    })
+  );
 }
 
 export {initContractors};

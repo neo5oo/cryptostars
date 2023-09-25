@@ -531,13 +531,15 @@ input[type="number"] {
 
 select,
 textarea,
-input:matches([type="email"],
-[type="number"],
-[type="password"],
-[type="search"],
-[type="tel"],
-[type="text"],
-[type="url"]) {
+input:matches(
+    [type="email"],
+    [type="number"],
+    [type="password"],
+    [type="search"],
+    [type="tel"],
+    [type="text"],
+    [type="url"]
+  ) {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -1455,10 +1457,11 @@ button,
   display: flex;
 }
 
-.users-list__table-name svg {
+.users-list__table .users-list__table-body .users-list__table-cell .icon {
   width: 20px;
   height: 20px;
   margin-right: 10px;
+  flex-shrink: 0;
 }
 
 .users-list__badges-list {
@@ -2024,9 +2027,11 @@ button,
   display: block;
   height: 1px;
   width: 520px;
-  background: -webkit-gradient(linear, left top, right top, color-stop(80%, transparent), color-stop(20%, #a8b7d4)), -webkit-gradient(linear, left top, right top, from(transparent), to(transparent));
+  background: -webkit-gradient(linear, left top, right top, color-stop(80%, transparent), color-stop(20%, #a8b7d4)),
+    -webkit-gradient(linear, left top, right top, from(transparent), to(transparent));
   background: -o-linear-gradient(left, transparent 80%, #a8b7d4 20%), -o-linear-gradient(left, transparent, transparent);
-  background: linear-gradient(to right, transparent 80%, #a8b7d4 20%), linear-gradient(to right, transparent, transparent);
+  background: linear-gradient(to right, transparent 80%, #a8b7d4 20%),
+    linear-gradient(to right, transparent, transparent);
   background-size: 5px 1px, 100% 1px;
   bottom: -20px;
   left: -20px;
@@ -2043,9 +2048,11 @@ button,
   display: block;
   height: 1px;
   width: 520px;
-  background: -webkit-gradient(linear, left top, right top, color-stop(80%, transparent), color-stop(20%, #a8b7d4)), -webkit-gradient(linear, left top, right top, from(transparent), to(transparent));
+  background: -webkit-gradient(linear, left top, right top, color-stop(80%, transparent), color-stop(20%, #a8b7d4)),
+    -webkit-gradient(linear, left top, right top, from(transparent), to(transparent));
   background: -o-linear-gradient(left, transparent 80%, #a8b7d4 20%), -o-linear-gradient(left, transparent, transparent);
-  background: linear-gradient(to right, transparent 80%, #a8b7d4 20%), linear-gradient(to right, transparent, transparent);
+  background: linear-gradient(to right, transparent 80%, #a8b7d4 20%),
+    linear-gradient(to right, transparent, transparent);
   background-size: 5px 1px, 100% 1px;
   bottom: -15px;
 }
@@ -2068,9 +2075,11 @@ button,
   display: block;
   height: 1px;
   width: 520px;
-  background: -webkit-gradient(linear, left top, right top, color-stop(80%, transparent), color-stop(20%, #a8b7d4)), -webkit-gradient(linear, left top, right top, from(transparent), to(transparent));
+  background: -webkit-gradient(linear, left top, right top, color-stop(80%, transparent), color-stop(20%, #a8b7d4)),
+    -webkit-gradient(linear, left top, right top, from(transparent), to(transparent));
   background: -o-linear-gradient(left, transparent 80%, #a8b7d4 20%), -o-linear-gradient(left, transparent, transparent);
-  background: linear-gradient(to right, transparent 80%, #a8b7d4 20%), linear-gradient(to right, transparent, transparent);
+  background: linear-gradient(to right, transparent 80%, #a8b7d4 20%),
+    linear-gradient(to right, transparent, transparent);
   background-size: 5px 1px, 100% 1px;
   bottom: -5px;
   left: -20px;
