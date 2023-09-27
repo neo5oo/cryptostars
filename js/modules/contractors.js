@@ -7,6 +7,7 @@ function initContractors(contractors) {
     return null;
   }
   let currentContractors = contractors;
+  let isMapReady = false;
   const tbodyElement = document.querySelector('.users-list__table-body');
   const listOpenerElement = contractorsElement.querySelector('[data-open="list"]');
   const mapOpenerElement = contractorsElement.querySelector('[data-open="map"]');
@@ -36,6 +37,15 @@ function initContractors(contractors) {
       });
       const contentElement = contractorsElement.querySelector(`[data-content="${openerElement.dataset.open}"]`);
       contentElement.hidden = false;
+      if (openerElement === mapOpenerElement && !isMapReady) {
+        addMap(
+          contractors.filter(({coords, paymentMethods, status}) => {
+            const hasRub = paymentMethods && paymentMethods.some(({currency}) => currency === 'RUB');
+            return status === 'seller' && coords && hasRub;
+          })
+        );
+        isMapReady = true;
+      }
       event.currentTarget.classList.add('is-active');
     });
   });
@@ -62,12 +72,6 @@ function initContractors(contractors) {
 
   switchBuySale();
   renderContractors();
-  addMap(
-    contractors.filter(({coords, paymentMethods, status}) => {
-      const hasRub = paymentMethods && paymentMethods.some(({currency}) => currency === 'RUB');
-      return status === 'seller' && coords && hasRub;
-    })
-  );
 }
 
 export {initContractors};
