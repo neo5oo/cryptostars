@@ -1,3 +1,5 @@
+import {getBaloonTemplate} from './get-baloon-template.js';
+
 function addMap(contractors) {
   const ZOOM = 9;
   const PIN_WIDTH = 36;
@@ -18,16 +20,32 @@ function addMap(contractors) {
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
   }).addTo(map);
 
-  contractors.forEach(({coords}) => {
-    const pinIcon = L.marker(coords, {
+  const markersGroup = L.layerGroup().addTo(map);
+
+  for (let i = 0; i < contractors.length; i++) {
+    const marker = L.marker(contractors[i].coords, {
       icon: L.icon({
         iconUrl: 'img/pin.svg',
         iconSize: [PIN_WIDTH, PIN_HEIGHT],
         iconAnchor: [PIN_WIDTH_HALF, PIN_HEIGHT]
       })
     });
-    pinIcon.addTo(map);
-  });
+    markersGroup.addLayer(marker);
+  }
+
+  map.addLayer(markersGroup).setView(BASE_COORDS, 10);
+
+  // contractors.forEach(({coords}) => {
+  //   const pinIcon = L.marker(coords, {
+  //     icon: L.icon({
+  //       iconUrl: 'img/pin.svg',
+  //       iconSize: [PIN_WIDTH, PIN_HEIGHT],
+  //       iconAnchor: [PIN_WIDTH_HALF, PIN_HEIGHT]
+  //     })
+  //   });
+  //   pinIcon.addTo(map);
+  // });
+  getBaloonTemplate();
 }
 
 export {addMap};

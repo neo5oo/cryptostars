@@ -35,6 +35,8 @@ function getContractorTemplate(contractor) {
       <button class="btn btn--greenborder" type="button">Обменять</button>
     </td>
   </tr>`;
+
+  console.log(contractor);
 }
 
 export {getContractorTemplate};
