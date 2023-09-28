@@ -1,4 +1,3 @@
-import {html} from '../utils/html.js';
 import {splitNumber} from '../utils/split-number.js';
 
 function getContractorTemplate(contractor) {

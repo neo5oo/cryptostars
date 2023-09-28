@@ -1,7 +1,7 @@
 import {getBaloonTemplate} from './get-baloon-template.js';
 
 function addMap(contractors) {
-  const ZOOM = 9;
+  const ZOOM = 8;
   const PIN_WIDTH = 36;
   const PIN_WIDTH_HALF = 18;
   const PIN_HEIGHT = 46;
@@ -22,30 +22,18 @@ function addMap(contractors) {
 
   const markersGroup = L.layerGroup().addTo(map);
 
-  for (let i = 0; i < contractors.length; i++) {
-    const marker = L.marker(contractors[i].coords, {
+  contractors.forEach((contractor) => {
+    const pinIcon = L.marker(contractor.coords, {
       icon: L.icon({
         iconUrl: 'img/pin.svg',
         iconSize: [PIN_WIDTH, PIN_HEIGHT],
         iconAnchor: [PIN_WIDTH_HALF, PIN_HEIGHT]
       })
     });
-    markersGroup.addLayer(marker);
-  }
-
-  map.addLayer(markersGroup).setView(BASE_COORDS, 10);
-
-  // contractors.forEach(({coords}) => {
-  //   const pinIcon = L.marker(coords, {
-  //     icon: L.icon({
-  //       iconUrl: 'img/pin.svg',
-  //       iconSize: [PIN_WIDTH, PIN_HEIGHT],
-  //       iconAnchor: [PIN_WIDTH_HALF, PIN_HEIGHT]
-  //     })
-  //   });
-  //   pinIcon.addTo(map);
-  // });
-  getBaloonTemplate();
+    pinIcon.bindPopup(getBaloonTemplate(contractor)).addTo(markersGroup);
+  });
+  map.addLayer(markersGroup).setView(BASE_COORDS, ZOOM);
+  return map;
 }
 
 export {addMap};

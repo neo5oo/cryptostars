@@ -1,77 +1,90 @@
 import {getContractorTemplate} from './get-contractor-template.js';
 import {addMap} from './map.js';
 
-function initContractors(contractors) {
-  const contractorsElement = document.querySelector('.contractors');
-  if (!contractorsElement) {
-    return null;
-  }
-  let currentContractors = contractors;
-  let isMapReady = false;
-  const tbodyElement = document.querySelector('.users-list__table-body');
-  const listOpenerElement = contractorsElement.querySelector('[data-open="list"]');
-  const mapOpenerElement = contractorsElement.querySelector('[data-open="map"]');
+class Contractors {
+  constructor(contractors) {
+    this._contractorsElement = document.querySelector('.contractors');
+    if (!this._contractorsElement) {
+      return null;
+    }
+    this._contractors = contractors;
+    this._currentContractors = this._contractors;
+    this._map = null;
 
-  const contentElements = contractorsElement.querySelectorAll('[data-content]');
-  const openerElements = [listOpenerElement, mapOpenerElement];
+    this._checkboxElement = this._contractorsElement.querySelector('#checked-users');
+    this._tbodyElement = this._contractorsElement.querySelector('.users-list__table-body');
+    this._listOpenerElement = this._contractorsElement.querySelector('[data-open="list"]');
+    this._mapOpenerElement = this._contractorsElement.querySelector('[data-open="map"]');
+    this._contentElements = this._contractorsElement.querySelectorAll('[data-content]');
+    this._openerElements = [this._listOpenerElement, this._mapOpenerElement];
+    this._buyButton = this._contractorsElement.querySelector('[data-open="buy"]');
+    this._saleButton = this._contractorsElement.querySelector('[data-open="sale"]');
+    this._buttons = [this._buyButton, this._saleButton];
 
-  const checkboxElement = contractorsElement.querySelector('#checked-users');
-
-  checkboxElement.addEventListener('change', () => {
-    renderContractors();
-  });
-
-  function renderContractors() {
-    const verifiedUsers = currentContractors.filter(({isVerified}) => isVerified);
-    const users = checkboxElement.checked ? verifiedUsers : currentContractors;
-    tbodyElement.innerHTML = users.map(getContractorTemplate).join('');
-  }
-
-  openerElements.forEach((openerElement) => {
-    openerElement.addEventListener('click', (event) => {
-      contentElements.forEach((itemElement) => {
-        itemElement.hidden = true;
+    this._openerElements.forEach((openerElement) => {
+      openerElement.addEventListener('click', (event) => {
+        this._handleClickOpener(openerElement, event);
       });
-      openerElements.forEach((itemElement) => {
-        itemElement.classList.remove('is-active');
-      });
-      const contentElement = contractorsElement.querySelector(`[data-content="${openerElement.dataset.open}"]`);
-      contentElement.hidden = false;
-      if (openerElement === mapOpenerElement && !isMapReady) {
-        addMap(
-          contractors.filter(({coords, paymentMethods, status}) => {
-            const hasRub = paymentMethods && paymentMethods.some(({currency}) => currency === 'RUB');
-            return status === 'seller' && coords && hasRub;
-          })
-        );
-        isMapReady = true;
-      }
-      event.currentTarget.classList.add('is-active');
     });
-  });
+    this._checkboxElement.addEventListener('change', this._onChange.bind(this));
 
-  function switchBuySale() {
-    const buyButton = contractorsElement.querySelector('[data-open="buy"]');
-    const saleButton = contractorsElement.querySelector('[data-open="sale"]');
-    const sallers = contractors.filter(({status}) => status === 'seller');
-    const buyers = contractors.filter(({status}) => status === 'buyer');
+    this._initSwitchBuySale();
+    this.render();
+  }
 
-    const elements = [buyButton, saleButton];
+  get _sallers() {
+    return this._contractors.filter(({status}) => status === 'seller');
+  }
 
-    elements.forEach((element) => {
+  get _buyers() {
+    return this._contractors.filter(({status}) => status === 'buyer');
+  }
+
+  _onChange() {
+    this.render();
+  }
+
+  _handleClickOpener(openerElement, event) {
+    this._contentElements.forEach((itemElement) => {
+      itemElement.hidden = true;
+    });
+    this._openerElements.forEach((itemElement) => {
+      itemElement.classList.remove('is-active');
+    });
+    const contentElement = this._contractorsElement.querySelector(`[data-content="${openerElement.dataset.open}"]`);
+    contentElement.hidden = false;
+    if (openerElement === this._mapOpenerElement && !this._map) {
+      this._map = addMap(
+        this._contractors.filter(({coords, paymentMethods, status}) => {
+          const hasRub = paymentMethods && paymentMethods.some(({currency}) => currency === 'RUB');
+          return status === 'seller' && coords && hasRub;
+        })
+      );
+    }
+    this._map.closePopup();
+    event.currentTarget.classList.add('is-active');
+  }
+
+  _initSwitchBuySale() {
+    this._buttons.forEach((element) => {
       element.addEventListener('click', (event) => {
-        elements.forEach((itemElement) => {
+        this._buttons.forEach((itemElement) => {
           itemElement.classList.remove('is-active');
         });
         event.currentTarget.classList.add('is-active');
-        currentContractors = event.currentTarget === saleButton ? buyers : sallers;
-        renderContractors();
+        this._currentContractors = event.currentTarget === this._saleButton ? this._buyers : this._sallers;
+        this.render();
       });
     });
   }
 
-  switchBuySale();
-  renderContractors();
+  render() {
+    const verifiedUsers = this._currentContractors.filter(({isVerified}) => isVerified);
+    const users = this._checkboxElement.checked ? verifiedUsers : this._currentContractors;
+    this._tbodyElement.innerHTML = users.map(getContractorTemplate).join('');
+  }
 }
 
-export {initContractors};
+const initContractors = (contractors) => new Contractors(contractors);
+
+export {Contractors, initContractors};
