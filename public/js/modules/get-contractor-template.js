@@ -1,4 +1,5 @@
 import {splitNumber} from '../utils/split-number.js';
+import {emptyTemplate, svgTemplate} from './icon-template.js';
 
 function getContractorTemplate(contractor) {
   function getMethodItemsTemplate() {
@@ -12,10 +13,6 @@ function getContractorTemplate(contractor) {
       ${getMethodItemsTemplate()}
     </ul>`;
   }
-  const emptyTemplate = html`<span class="icon"></span>`;
-  const svgTemplate = html`<svg class="icon" width="20" height="20" aria-hidden="true">
-    <use xlink:href="#icon-star"></use>
-  </svg>`;
 
   return html`<tr class="users-list__table-row">
     <td class="users-list__table-cell users-list__table-name">
