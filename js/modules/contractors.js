@@ -82,6 +82,10 @@ class Contractors {
     const verifiedUsers = this._currentContractors.filter(({isVerified}) => isVerified);
     const users = this._checkboxElement.checked ? verifiedUsers : this._currentContractors;
     this._tbodyElement.innerHTML = users.map(getContractorTemplate).join('');
+
+    // Как модули взаимодействуют между собой не понял
+    // const verifiedUsersMap = new Map();
+    // verifiedUsersMap.render(this._currentContractors);
   }
 }
 
