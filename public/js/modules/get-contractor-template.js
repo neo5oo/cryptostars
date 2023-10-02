@@ -1,5 +1,5 @@
 import {splitNumber} from '../utils/split-number.js';
-import {emptyTemplate, svgTemplate} from './icon-template.js';
+import {getVerifiedIconTemplate} from './icon-template.js';
 
 function getContractorTemplate(contractor) {
   function getMethodItemsTemplate() {
@@ -16,7 +16,7 @@ function getContractorTemplate(contractor) {
 
   return html`<tr class="users-list__table-row">
     <td class="users-list__table-cell users-list__table-name">
-      ${contractor.isVerified ? svgTemplate : emptyTemplate}
+      ${getVerifiedIconTemplate(contractor.isVerified)}
       <span>${contractor.userName}</span>
     </td>
     <td class="users-list__table-cell users-list__table-currency">${contractor.balance.currency}</td>

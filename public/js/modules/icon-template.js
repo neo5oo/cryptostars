@@ -3,4 +3,8 @@ const svgTemplate = html`<svg class="icon" width="20" height="20" aria-hidden="t
   <use xlink:href="#icon-star"></use>
 </svg>`;
 
-export {emptyTemplate, svgTemplate};
+function getVerifiedIconTemplate(isVerified) {
+  return isVerified ? svgTemplate : emptyTemplate;
+}
+
+export {getVerifiedIconTemplate};
