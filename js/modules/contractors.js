@@ -1,5 +1,6 @@
 import {getContractorTemplate} from './get-contractor-template.js';
-import {addMap} from './map.js';
+import {Map} from './map.js';
+import {getBaloonTemplate} from './get-baloon-template.js';
 
 class Contractors {
   constructor(contractors) {
@@ -20,6 +21,7 @@ class Contractors {
     this._buyButton = this._contractorsElement.querySelector('[data-open="buy"]');
     this._saleButton = this._contractorsElement.querySelector('[data-open="sale"]');
     this._buttons = [this._buyButton, this._saleButton];
+    this._openerElement = this._listOpenerElement;
 
     this._openerElements.forEach((openerElement) => {
       openerElement.addEventListener('click', (event) => {
@@ -27,6 +29,7 @@ class Contractors {
       });
     });
     this._checkboxElement.addEventListener('change', this._onChange.bind(this));
+    // this._modal = initModal(this._contractorsElement.querySelectorAll('.btn--greenborder'));
 
     this._initSwitchBuySale();
     this.render();
@@ -53,16 +56,27 @@ class Contractors {
     });
     const contentElement = this._contractorsElement.querySelector(`[data-content="${openerElement.dataset.open}"]`);
     contentElement.hidden = false;
+    this._openerElement = openerElement;
     if (openerElement === this._mapOpenerElement && !this._map) {
-      this._map = addMap(
-        this._contractors.filter(({coords, paymentMethods, status}) => {
-          const hasRub = paymentMethods && paymentMethods.some(({currency}) => currency === 'RUB');
-          return status === 'seller' && coords && hasRub;
-        })
-      );
+      this._map = new Map({
+        data: this._contractorsOnMap,
+        element: document.getElementById('map'),
+        getBaloonTemplate
+      });
+      this._map.render();
     }
-    this._map.closePopup();
+    if (this._map) {
+      this._map.closePopup();
+    }
     event.currentTarget.classList.add('is-active');
+    this._map.render();
+  }
+
+  get _contractorsOnMap() {
+    return this._contractors.filter(({coords, paymentMethods, status}) => {
+      const hasRub = paymentMethods && paymentMethods.some(({currency}) => currency === 'RUB');
+      return status === 'seller' && coords && hasRub;
+    });
   }
 
   _initSwitchBuySale() {
@@ -79,16 +93,17 @@ class Contractors {
   }
 
   render() {
-    const verifiedUsers = this._currentContractors.filter(({isVerified}) => isVerified);
-    const users = this._checkboxElement.checked ? verifiedUsers : this._currentContractors;
-    this._tbodyElement.innerHTML = users.map(getContractorTemplate).join('');
-
-    // Как модули взаимодействуют между собой не понял
-    // const verifiedUsersMap = new Map();
-    // verifiedUsersMap.render(this._currentContractors);
+    if (this._openerElement === this._mapOpenerElement) {
+      const verifiedUsersOnMap = this._contractorsOnMap.filter(({isVerified}) => isVerified);
+      const users = this._checkboxElement.checked ? verifiedUsersOnMap : this._contractorsOnMap;
+      this._map.addMarkers(users);
+    } else {
+      const verifiedUsers = this._currentContractors.filter(({isVerified}) => isVerified);
+      const users = this._checkboxElement.checked ? verifiedUsers : this._currentContractors;
+      this._tbodyElement.innerHTML = users.map(getContractorTemplate).join('');
+    }
   }
 }
-
 const initContractors = (contractors) => new Contractors(contractors);
 
 export {Contractors, initContractors};

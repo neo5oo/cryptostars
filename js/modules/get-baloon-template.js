@@ -1,5 +1,5 @@
 import {splitNumber} from '../utils/split-number.js';
-import {emptyTemplate, svgTemplate} from './icon-template.js';
+import {getVerifiedIconTemplate} from './icon-template.js';
 
 function getBaloonTemplate(contractor) {
   function getMethodItemsTemplate() {
@@ -15,7 +15,7 @@ function getBaloonTemplate(contractor) {
   }
 
   return html`<div class="user-card">
-    ${contractor.isVerified ? svgTemplate : emptyTemplate}
+    ${getVerifiedIconTemplate(contractor.isVerified)}
       <span>${contractor.userName}</span>
     </span>
     <p class="user-card__cash-item">
