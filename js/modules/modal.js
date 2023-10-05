@@ -3,7 +3,6 @@ class Modal {
     this._modal = document.querySelector('.modal');
     this._btnOpeners = openers;
     this._btnClose = this._modal.querySelector('.modal__close-btn');
-    this._btnModalSubmit = this._modal.querySelector('.modal__submit');
     this._overlay = this._modal.querySelector('.modal__overlay');
     this._openerCallback = openerCallback;
 
