@@ -36,6 +36,9 @@ class Map {
   addMarkers(data = this._data) {
     this._markersGroup.clearLayers();
     if (!this._getBaloonTemplate) {
+      if (isDev()) {
+        console.error('Отсутствует метод _getBaloonTemplate');
+      }
       return;
     }
     data.forEach((item) => {
