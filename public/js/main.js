@@ -2,7 +2,6 @@ import {initContractors} from './modules/contractors.js';
 import {initUserProfile} from './modules/user-profile.js';
 import {getData} from './modules/api.js';
 import {showErrorMessage} from './modules/error-message.js';
-// import {isDev} from './utils/is-dev.js';
 
 getData('contractors')
   .then(initContractors)
