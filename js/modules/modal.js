@@ -1,29 +1,41 @@
 class Modal {
-  constructor(openers, openerCallback = () => {}) {
-    this._modal = document.querySelector('.modal');
-    this._btnOpeners = openers;
-    this._btnClose = this._modal.querySelector('.modal__close-btn');
-    this._overlay = this._modal.querySelector('.modal__overlay');
-    this._openerCallback = openerCallback;
+  constructor(modalElement) {
+    this._modalElement = modalElement;
+    this._btnOpeners = [];
+    this._btnClose = this._modalElement.querySelector('.modal__close-btn');
+    this._overlay = this._modalElement.querySelector('.modal__overlay');
 
-    this._focusableElements = this._modal.querySelectorAll(
+    this._focusableElements = this._modalElement.querySelectorAll(
       'a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
     this._firstFocusableElement = this._focusableElements[0];
     this._lastFocusableElement = this._focusableElements[this._focusableElements.length - 1];
 
-    this._handleButtonClick = this._handleButtonClick.bind(this);
+    this._handleOpenButtonClick = this._handleOpenButtonClick.bind(this);
     this._handleCloseButtonClick = this._handleCloseButtonClick.bind(this);
     this._handleOverlayClick = this._handleOverlayClick.bind(this);
     this._handleKeydown = this._handleKeydown.bind(this);
+  }
+
+  init(openers, openerCallback = () => {}, closerCallback = () => {}) {
+    this._btnOpeners = openers;
+    this._openerCallback = openerCallback;
+    this._closerCallback = closerCallback;
+
     this._btnOpeners.forEach((opener) => {
       opener.addEventListener('click', this._handleOpenButtonClick);
     });
   }
 
+  destroy() {
+    this._btnOpeners = [];
+    this._openerCallback = null;
+    this._closerCallback = null;
+  }
+
   _openModal() {
-    this._openerCallback(this._modal);
-    this._modal.style.display = '';
+    this._openerCallback(this._modalElement);
+    this._modalElement.hidden = false;
     this._firstFocusableElement.focus();
     this._btnClose.addEventListener('click', this._handleCloseButtonClick);
     this._overlay.addEventListener('click', this._handleOverlayClick);
@@ -31,7 +43,8 @@ class Modal {
   }
 
   _closeModal() {
-    this._modal.style.display = 'none';
+    this._closerCallback(this._modalElement);
+    this._modalElement.hidden = true;
     this._btnClose.removeEventListener('click', this._handleCloseButtonClick);
     this._overlay.removeEventListener('click', this._handleOverlayClick);
     document.removeEventListener('keydown', this._handleKeydown);
@@ -72,6 +85,6 @@ class Modal {
   }
 }
 
-const initModal = (openers, openerCallback) => new Modal(openers, openerCallback);
+const initModal = (openers, openerCallback, closerCallback) => new Modal(openers, openerCallback, closerCallback);
 
 export {initModal};

@@ -1,6 +1,7 @@
 import {getContractorTemplate} from './get-contractor-template.js';
 import {Map} from './map.js';
 import {getBaloonTemplate} from './get-baloon-template.js';
+import {initModal} from './modal.js';
 
 class Contractors {
   constructor(contractors) {
@@ -11,6 +12,7 @@ class Contractors {
     this._contractors = contractors;
     this._currentContractors = this._contractors;
     this._map = null;
+    this._status = 'buy';
 
     this._checkboxElement = this._contractorsElement.querySelector('#checked-users');
     this._tbodyElement = this._contractorsElement.querySelector('.users-list__table-body');
@@ -29,7 +31,9 @@ class Contractors {
       });
     });
     this._checkboxElement.addEventListener('change', this._onChange.bind(this));
-    // this._modal = initModal(this._contractorsElement.querySelectorAll('.btn--greenborder'));
+    const [buyModalElement, sellModalElement] = document.querySelectorAll('.modal');
+    this._buyModal = initModal(buyModalElement);
+    this._sellModal = initModal(sellModalElement);
 
     this._initSwitchBuySale();
     this.render();
@@ -87,6 +91,15 @@ class Contractors {
         });
         event.currentTarget.classList.add('is-active');
         this._currentContractors = event.currentTarget === this._saleButton ? this._buyers : this._sallers;
+
+        this._status = event.currentTarget === this._saleButton ? 'sale' : 'buy';
+
+        if (this._status === 'sale') {
+          this._sellModal.destroy();
+        } else {
+          this._buyModal.destroy();
+        }
+
         this.render();
       });
     });
@@ -101,6 +114,13 @@ class Contractors {
       const verifiedUsers = this._currentContractors.filter(({isVerified}) => isVerified);
       const users = this._checkboxElement.checked ? verifiedUsers : this._currentContractors;
       this._tbodyElement.innerHTML = users.map(getContractorTemplate).join('');
+
+      const currentModal = this._status === 'buy' ? this._buyModal : this._sellModal;
+      currentModal.init(
+        this._tbodyElement.querySelectorAll('.btn--greenborder'),
+        () => {},
+        () => {}
+      );
     }
   }
 }
