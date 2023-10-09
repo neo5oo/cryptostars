@@ -59,7 +59,7 @@ class Modal {
   }
 
   _handleOverlayClick(event) {
-    if (event.target === this.overlay) {
+    if (event.target === this._overlay) {
       this._closeModal();
     }
   }
