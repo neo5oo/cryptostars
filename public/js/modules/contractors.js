@@ -124,6 +124,7 @@ class Contractors {
     }
   }
 }
+
 const initContractors = (contractors) => new Contractors(contractors);
 
 export {Contractors, initContractors};
