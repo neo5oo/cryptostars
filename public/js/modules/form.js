@@ -1,37 +1,32 @@
-// // import {splitNumber} from '../utils/split-number.js';
+import {splitNumber} from '../utils/split-number.js';
+import {getVerifiedIconTemplate} from './icon-template.js';
 
-// import {getformTemplate} from './get-form-template.js';
+class Form {
+  constructor(formElement) {
+    this._formElement = formElement;
+    this._btnExchangeElements = this._formElement.querySelector('.custom-input__btn');
+    this._btnSubmit = this._formElement.querySelector('.modal__submit');
+    this._dataUserName = this._formElement.querySelector('[data-user-name]');
+    this._dataExchangeRate = this._formElement.querySelector('[data-exchange-rate]');
+    this._dataMinAmount = this._formElement.querySelector('[data-min-amount]');
+    this._dataAmount = this._formElement.querySelector('[data-amount]');
 
-// class Form {
-//   constructor() {
-//     this._btnsExchangeAll = document.querySelectorAll('.custom-input__btn');
-//     this._btnSubmit = document.querySelector('.modal__submit');
-//     this._modalContent = document.querySelector('.modal__content');
-//     this._btn = document.querySelector('[data-contractor-id]');
-//     this._info = document.querySelector('.transaction-info');
+    // this._btnExchangeElements.addEventListener('click', this._substituteData.bind(this));
+    this._btnSubmit.addEventListener('click', this._handleSubmit.bind(this));
+  }
 
-//     // this._btnExchangeAll.addEventListener('click', this._substituteData.bind(this));
-//     // this._btnSubmit.addEventListener('click', this._handleSubmit.bind(this));
-//   }
+  _handleSubmit(event) {
+    event.preventDefault();
+  }
 
-//   _substituteData() {}
+  changeContent({userName, exchangeRate, minAmount, balance: {amount}, isVerified}) {
+    this._dataUserName.innerHTML = `${getVerifiedIconTemplate(isVerified)}${userName}`;
+    this._dataExchangeRate.textContent = splitNumber(exchangeRate);
+    this._dataMinAmount.textContent = splitNumber(minAmount);
+    this._dataAmount.textContent = splitNumber(amount);
+  }
+}
 
-//   _handleSubmit(event) {
-//     event.preventDefault();
-//   }
+const initForm = (formElement) => new Form(formElement);
 
-//   changeContent(contractor) {
-//     this._buyForm.changeContent(contractor);
-
-//     // if (contractor.id === this._btn) {
-//     // }
-//   }
-
-//   render() {
-//     this._modalContent.insertAdjacentElement('afterbegin', getformTemplate);
-//   }
-// }
-
-// const form = () => new Form();
-
-// export {form, Form};
+export {initForm, Form};

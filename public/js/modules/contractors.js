@@ -2,6 +2,7 @@ import {getContractorTemplate} from './get-contractor-template.js';
 import {Map} from './map.js';
 import {getBaloonTemplate} from './get-baloon-template.js';
 import {initModal} from './modal.js';
+import {initForm} from './form.js';
 
 class Contractors {
   constructor(contractors) {
@@ -12,7 +13,6 @@ class Contractors {
     this._contractors = contractors;
     this._currentContractors = this._contractors;
     this._map = null;
-    this._status = 'buy';
 
     this._checkboxElement = this._contractorsElement.querySelector('#checked-users');
     this._tbodyElement = this._contractorsElement.querySelector('.users-list__table-body');
@@ -31,9 +31,12 @@ class Contractors {
       });
     });
     this._checkboxElement.addEventListener('change', this._onChange.bind(this));
-    const [buyModalElement, sellModalElement] = document.querySelectorAll('.modal');
-    this._buyModal = initModal(buyModalElement);
-    this._sellModal = initModal(sellModalElement);
+
+    const modalElement = document.querySelector('.modal');
+    this._modal = initModal(modalElement);
+
+    const formElement = modalElement.querySelector('.form');
+    this._form = initForm(formElement);
 
     this._initSwitchBuySale();
     this.render();
@@ -92,13 +95,7 @@ class Contractors {
         event.currentTarget.classList.add('is-active');
         this._currentContractors = event.currentTarget === this._saleButton ? this._buyers : this._sallers;
 
-        this._status = event.currentTarget === this._saleButton ? 'sale' : 'buy';
-
-        if (this._status === 'sale') {
-          this._sellModal.destroy();
-        } else {
-          this._buyModal.destroy();
-        }
+        this._modal.destroy();
 
         this.render();
       });
@@ -115,10 +112,13 @@ class Contractors {
       const users = this._checkboxElement.checked ? verifiedUsers : this._currentContractors;
       this._tbodyElement.innerHTML = users.map(getContractorTemplate).join('');
 
-      const currentModal = this._status === 'buy' ? this._buyModal : this._sellModal;
-      currentModal.init(
+      this._modal.init(
         this._tbodyElement.querySelectorAll('.btn--greenborder'),
-        () => {},
+        (openerElement) => {
+          const {contractorId} = openerElement.dataset;
+          const contractor = users.find(({id}) => id === contractorId);
+          this._form.changeContent(contractor);
+        },
         () => {}
       );
     }
