@@ -33,8 +33,8 @@ class Modal {
     this._closerCallback = null;
   }
 
-  _openModal() {
-    this._openerCallback(this._modalElement);
+  _openModal(openerElement) {
+    this._openerCallback(openerElement, this._modalElement);
     this._modalElement.hidden = false;
     this._firstFocusableElement.focus();
     this._btnClose.addEventListener('click', this._handleCloseButtonClick);
@@ -50,8 +50,8 @@ class Modal {
     document.removeEventListener('keydown', this._handleKeydown);
   }
 
-  _handleOpenButtonClick() {
-    this._openModal();
+  _handleOpenButtonClick(event) {
+    this._openModal(event.currentTarget);
   }
 
   _handleCloseButtonClick() {
